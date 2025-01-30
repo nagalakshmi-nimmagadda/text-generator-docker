@@ -1,0 +1,21 @@
+# Model checkpoints
+model-server/checkpoints/*.pt
+model-server/checkpoints/step_5050.pt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/

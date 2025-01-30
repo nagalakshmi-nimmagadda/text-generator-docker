@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  model-server:
+    build: 
+      context: ./model-server
+      dockerfile: Dockerfile
+    volumes:
+      - ./model-server/checkpoints:/app/checkpoints:ro
+      - ./model-server/model.py:/app/model.py:ro
+      - ./model-server/config.py:/app/config.py:ro
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      model-server:
+        condition: service_healthy
+    restart: unless-stopped 
